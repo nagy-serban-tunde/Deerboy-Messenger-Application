@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {OrderedMap} from 'immutable'
 
 import logo from '../images/logo.png'
 import profile_people from '../images/profile-people.png'
@@ -11,7 +12,56 @@ import add_button from '../images/add.svg'
 
 export default class SidebarLeft extends Component {
 
+    constructor(props){
+        super(props)
+
+        this.addTestChannel = this.addTestChannel.bind(this);
+    }
+
+    _onResize() {
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this._onResize);
+        this.addTestChannel();
+    }
+
+    addTestChannel() {
+
+        const {store} = this.props;
+
+        for (let i = 0; i < 10; i++) {
+            const newChannel = {
+                _id: `${i}`,
+                title: `Channel title ${i}`,
+                lastMessage: `Hey there here... ${i}`,
+                members: new OrderedMap({
+                    '2': true,
+                    '3': true,
+                }),
+                messages: new OrderedMap(),
+            }
+
+            const msgId = `${i}`;
+            const moreMsgId = `${i + 1}`
+            newChannel.messages = newChannel.messages.set(msgId, true);
+            newChannel.messages = newChannel.messages.set(moreMsgId, true);
+
+            store.addChannel(i,newChannel)
+        }
+        
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this._onResize);
+    }
+
     render() {
+
+        const {store} = this.props;
+        const channels = store.getChannels();
+        const activeChannel = store.getActiveChannel();
+
         return <div className="sidebar-left">
                 <div className="logo">
                     <img src={logo} alt="Open Messenger Logo" width="226" height="54"/>
@@ -42,7 +92,28 @@ export default class SidebarLeft extends Component {
                     <div className="search">
                         <input type="text" name="Search" placeholder="Search people"/>
                     </div>
-                    <div className = "chanel new-message">
+
+                    {channels.map((channel, key) => {
+                        return (
+                            <div onClick={(key) => {
+                                store.setActiveChannelID(channel._id)
+                            }} key={channel._id} className = "chanel">
+                                <div className = "user-image">
+                                    <img src={avatar} alt="Avatar"/>
+                                    <span className = "status green"></span>
+                                </div>
+                                <div className = "chanel-info">
+                                    <h2>{channel.title}</h2>
+                                    <p className="typing">{channel.lastMessage}</p>
+                                </div>
+                                <div className="time">
+                                    <span>08:05</span>
+                                </div>
+                            </div>
+                        )
+                    })}
+
+                    {/* <div className = "chanel new-message">
                         <div className = "user-image">
                             <img src={avatar} alt="Avatar"/>
                             <span className = "status green"></span>
@@ -54,20 +125,7 @@ export default class SidebarLeft extends Component {
                         <div className = "number-message">
                             <span className="number">3</span>
                         </div>
-                    </div>
-                    <div className = "chanel">
-                        <div className = "user-image">
-                            <img src={avatar} alt="Avatar"/>
-                            <span className = "status green"></span>
-                        </div>
-                        <div className = "chanel-info">
-                            <h2>Sasha Cohen</h2>
-                            <p className="typing">Typing...</p>
-                        </div>
-                        <div className="time">
-                            <span>08:05</span>
-                        </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
                     

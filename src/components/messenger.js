@@ -8,11 +8,12 @@ export default class Messenger extends Component {
 
     render() {
 
+        const { store } = this.props;
         return <div className="app-messenger">
                 <div className="main">
-                    <SidebarLeft />
-                    <ChatWindow />
-                    <SidebarRight />
+                    <SidebarLeft store={store}/>
+                    <ChatWindow store={store}/>
+                    <SidebarRight store={store}/>
                 </div>
             </div>
   }

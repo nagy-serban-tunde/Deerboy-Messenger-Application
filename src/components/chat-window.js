@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import _ from 'lodash'
 
 // Images
 import people1 from '../images/people1.png'
@@ -13,11 +14,6 @@ import send_button from '../images/send-button.svg'
 export default class ChatWindow extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            messages: [
-
-            ],
-        }
 
         this._onResize = this._onResize.bind(this);
         this.addTestMessage = this.addTestMessage.bind(this);
@@ -32,9 +28,10 @@ export default class ChatWindow extends Component {
     }
 
     addTestMessage() {
-        let {messages} = this.state;
 
-        for (let i = 0; i < 5; i++) {
+        const {store} = this.props;
+
+        for (let i = 0; i < 100; i++) {
             let isMe = false;
             let chat_avatar = people1;
             if (i % 2 === 0) {
@@ -42,22 +39,25 @@ export default class ChatWindow extends Component {
                 chat_avatar = people3;
             }
             const newMsg = { 
+                _id: `${i}`,
                 author: `Author ${i}`,
                 body: `The body of message ${i}`,
                 avatar: chat_avatar,
                 me: isMe,
                 time: `19:${i}`,
             }
-            messages.push(newMsg);
+            store.addMessage(i, newMsg);
         }
-        this.setState({messages: messages});
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this._onResize);
     }
     render() {
-        const {messages} = this.state
+        const {store} = this.props;
+        const activeChannel = store.getActiveChannel();
+        const messages = store.getMessagesFromChannel(activeChannel);
+
         return <div className="content">
                     <div className="messages-title">
                         <h2 className="title">Family chat</h2>
