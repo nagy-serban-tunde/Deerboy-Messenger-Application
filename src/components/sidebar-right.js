@@ -2,14 +2,8 @@ import React, { Component } from 'react'
 
 import chanel_image from '../images/chanel-image.png'
 import people1 from '../images/people1.png'
-import people2 from '../images/people2.png'
-import people3 from '../images/people3.png'
 
 export default class SidebarRight extends Component {
-
-    constructor(props){
-        super(props)
-    }
 
     render() {
         

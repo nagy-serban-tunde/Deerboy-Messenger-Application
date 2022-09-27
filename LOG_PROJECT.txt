@@ -1,0 +1,12 @@
+Algorimusok:
+1. algoritmus 15 perc.
+2. algoritmus 15-20 perc.
+3. algoritmus 15-20 perc.
+
+Messenger applikáció:
+1 óra utána nézés, hogy a react miben tud segíteni egy ilyen jellegű applikáció elkészítésében. 
+30 perc react projekt kezdetleges elkészítése, node modulok , git repository.
+2 óra a left bar elkészítése -- funkciónalítás, dummy data.
+1 óra a chat ablak elkészítése -- funkciónalítás, dummy data.
+30 perc a right bar elkészítése.
+1 óra 30 perc a design implementálása

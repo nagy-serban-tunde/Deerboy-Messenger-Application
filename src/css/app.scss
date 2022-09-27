@@ -19,23 +19,47 @@ body {
     padding: 0;
     margin: 0;
 }
-.app-wrapper {
-    padding: 120px 80px 130px 80px;
-    background: $wrapper-background;
-}
 
 .app-messenger {
-    padding: 20px 15px 20px 40px;
-    background: $messenger-background;
-    border-radius: $border-radius;
+    padding: 120px 80px 130px 80px;
+    background: $wrapper-background;
+    @media (max-width: $breakpoint-mini-desktop) {
+        padding: 40px;
+    }
+    @media (max-width: $breakpoint-tablet) {
+        padding: 30px
+    }
+    @media (max-width: $breakpoint-mobile) {
+        padding: 10px;
+    }
     .main {
         display: flex;
         height: 100%;
         overflow: hidden;
+        padding: 20px 15px 20px 40px;
+        background: $messenger-background;
+        border-radius: $border-radius;
+        @media (max-width: $breakpoint-mini-desktop) {
+            padding: 20px;
+        }
+        @media (max-width: $breakpoint-mobile) {
+            flex-direction: column;
+        }
         .sidebar-left {
             max-width: 20%;
             flex: 0 0 20%;
             padding-right: 40px;
+            @media (max-width: $breakpoint-mini-desktop) {
+                max-width: 40%;
+                flex: 0 0 40%;
+                padding: 20px;
+            }
+            @media (max-width: $breakpoint-mobile) {
+                max-width: 100%;
+                flex: 0 0 100%;
+                padding-right: 0;
+                order: 0;
+            }
             .logo {
                 padding-bottom: 15px;
                 border-bottom: 1px solid $border-color;
@@ -54,6 +78,9 @@ body {
                         .name {
                             font-size: 18px;
                             font-weight: 500;
+                        }
+                        .settings {
+                            cursor: pointer;
                         }
                     }
                     .profession {
@@ -116,6 +143,16 @@ body {
             border-radius: $border-radius;
             border: 2px solid $border-color;
             background: $chat-window-background;
+            @media (max-width: $breakpoint-mini-desktop) {
+                max-width: 50%;
+                flex: 0 0 50%;
+                padding: 20px;
+            }
+            @media (max-width: $breakpoint-mobile) {
+                max-width: 100%;
+                flex: 0 0 100%;
+                order: 2;
+            }
             .messages-title {
                 padding: 30px;
                 border-bottom: 2px solid $border-color;
@@ -154,10 +191,12 @@ body {
                             background: transparent;
                             border: none;
                             margin-left: 7px;
+                            cursor: pointer;
                         }
                         button.smile {
                             background: transparent;
                             border: none;
+                            cursor: pointer;
                         }
                     }
                 }
@@ -166,6 +205,11 @@ body {
         .sidebar-right {
             max-width: 10%;
             flex: 0 0 10%;
+            @media (max-width: $breakpoint-mobile) {
+                max-width: 100%;
+                flex: 0 0 100%;
+                order: 1;
+            }
             .chanel-image {
                 text-align: center;
                 img {
@@ -189,6 +233,9 @@ body {
     flex-direction: column;
     overflow-y: auto;
     height: 100%;
+    @media (max-width: $breakpoint-mobile) {
+        height: 500px;
+    }
     .message {
         display: flex;
         flex-direction: row;
@@ -226,43 +273,54 @@ body {
     }
 }
 
+.chanels-title-addchanel {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    .addchanel {
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        background: #dbe5ed33;
+        cursor: pointer;
+    }
+    .chanels-title {
+        font-weight: 500;
+        font-size: 16px;
+    }
+}
+.search {
+    margin-bottom: 15px;
+    input {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid $border-color;
+        background: $search-background;
+        font-size: 14px;
+        color: $search-color;
+        outline: none;
+    }
+    input::placeholder {
+        color: $search-color;
+    }
+}
+
 .chanels {
-    .chanels-title-addchanel {
-        margin-bottom: 25px;
-        display: flex;
-        justify-content: space-between;
-        .addchanel {
-            width: 24px;
-            height: 24px;
-            text-align: center;
-            background: #dbe5ed33;
-        }
-        .chanels-title {
-            font-weight: 500;
-            font-size: 16px;
-        }
-    }
-    .search {
-        margin-bottom: 15px;
-        input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid $border-color;
-            background: $search-background;
-            font-size: 14px;
-            color: $search-color;
-            outline: none;
-        }
-        input::placeholder {
-            color: $search-color;
-        }
-    }
-    .chanel {
+    height: 500px;
+    overflow: auto;
+    .channel {
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 20px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        &:hover {
+            border: 1px solid $border-color;
+        }
         .user-image {
             width: 50px;
             display: inline-block;
@@ -328,12 +386,23 @@ body {
             background: $search-background;
             border-radius: 10px;
         }
+        &.active {
+            border: 1px solid $border-color;
+            background: $search-background;
+            border-radius: 10px;
+        }
     }
 }
 
 .members {
     display: flex;
     flex-direction: column;
+    @media (max-width: $breakpoint-mobile) {
+        max-width: 100%;
+        flex: 0 0 100%;
+        flex-direction: row;
+        justify-content: center;
+    }
     .member {
         text-align: center;
         .user-image {

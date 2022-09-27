@@ -4,7 +4,6 @@ import _ from 'lodash'
 
 // Images
 import people1 from '../images/people1.png'
-import people3 from '../images/people3.png'
 
 // svg 
 import smile from '../images/smile.svg'
@@ -15,11 +14,43 @@ export default class ChatWindow extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            newMessage : ''
+        }
+
         this._onResize = this._onResize.bind(this);
         this.addTestMessage = this.addTestMessage.bind(this);
+        this.handleSend = this.handleSend.bind(this);
     }
 
     _onResize() {
+    }
+
+    handleSend() {
+        const {newMessage} = this.state;
+        const {store} = this.props;
+        const user = store.getUser();
+        // const messageId = '10000';
+        const channel = store.getActiveChannel();
+        const channelId = _.get(channel, '_id', null);
+        var messageId = '';
+        var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i <6; i++ ) {
+            messageId += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
+        }
+        const message = {
+            _id: messageId,
+            channelId: channelId,
+            body: newMessage,
+            author: user.name,
+            avatar: user.avatar,
+            me: true,
+            time: '19:08',
+        }
+        
+        store.addMessage(messageId, message)
     }
 
     componentDidMount() {
@@ -30,13 +61,14 @@ export default class ChatWindow extends Component {
     addTestMessage() {
 
         const {store} = this.props;
+        const user = store.getUser();
 
         for (let i = 0; i < 100; i++) {
             let isMe = false;
             let chat_avatar = people1;
             if (i % 2 === 0) {
                 isMe = true;
-                chat_avatar = people3;
+                chat_avatar = user.avatar;
             }
             const newMsg = { 
                 _id: `${i}`,
@@ -82,10 +114,16 @@ export default class ChatWindow extends Component {
 
                     <div className="messenger-input">
                         <div className="text-input">
-                            <input type="text" name="Search" placeholder="Enter your message here"/>
+                            <input type="text" name="Search" onKeyUp={(event)=> {
+                                if(event.key === 'Enter' && !event.shiftKey) {
+                                    this.handleSend();
+                                }
+                            }} onChange={(event) => {
+                                this.setState({newMessage: _.get(event,'target.value')})
+                            }} placeholder="Enter your message here" value={this.state.newMessage}/>
                             <div className="actions">
                                 <button className="smile"><img src={smile} alt="React Logo" /></button>
-                                <button className="send"><img src={send_button} alt="React Logo" /></button>
+                                <button className="send" onClick={this.handleSend}><img src={send_button} alt="React Logo" /></button>
                             </div>
                         </div>
                     </div>
